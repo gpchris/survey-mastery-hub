@@ -45,8 +45,9 @@ import type { Module } from "@/data/courses";
 const CourseDetail = () => {
   const { courseId } = useParams();
   const course = courses.find((c) => c.id === courseId);
-  const { getProgress } = useCourseProgress();
+  const { getProgress, getCompletedModules, completeModule } = useCourseProgress();
   const progress = course ? getProgress(course.id) : 0;
+  const completedModuleIds = course ? getCompletedModules(course.id) : [];
   const [sandboxOpen, setSandboxOpen] = useState(false);
   const [currentSandbox, setCurrentSandbox] = useState<"survey-builder" | "data-analysis" | null>(null);
   const [selectedModule, setSelectedModule] = useState<Module | null>(null);
@@ -67,7 +68,27 @@ const CourseDetail = () => {
     );
   }
 
-  const completedModules = Math.floor((progress / 100) * course.modules.length);
+  const handleNextLesson = () => {
+    if (!course || !selectedModule) return;
+    
+    // Mark current module as completed
+    completeModule(course.id, selectedModule.id, course.modules.length);
+    
+    // Navigate to next module
+    const currentIndex = course.modules.findIndex(m => m.id === selectedModule.id);
+    if (currentIndex < course.modules.length - 1) {
+      setSelectedModule(course.modules[currentIndex + 1]);
+    }
+  };
+
+  const handlePreviousLesson = () => {
+    if (!course || !selectedModule) return;
+    
+    const currentIndex = course.modules.findIndex(m => m.id === selectedModule.id);
+    if (currentIndex > 0) {
+      setSelectedModule(course.modules[currentIndex - 1]);
+    }
+  };
 
   const getModuleIcon = (type: string) => {
     switch (type) {
@@ -272,8 +293,19 @@ const CourseDetail = () => {
                   </Card>
 
                   <div className="flex items-center justify-between mt-6">
-                    <Button variant="outline">Previous Lesson</Button>
-                    <Button>Next Lesson <ChevronRight className="w-4 h-4 ml-2" /></Button>
+                    <Button 
+                      variant="outline" 
+                      onClick={handlePreviousLesson}
+                      disabled={!course || course.modules.findIndex(m => m.id === selectedModule.id) === 0}
+                    >
+                      Previous Lesson
+                    </Button>
+                    <Button 
+                      onClick={handleNextLesson}
+                      disabled={!course || course.modules.findIndex(m => m.id === selectedModule.id) === course.modules.length - 1}
+                    >
+                      Next Lesson <ChevronRight className="w-4 h-4 ml-2" />
+                    </Button>
                   </div>
                 </div>
               )}
@@ -284,7 +316,7 @@ const CourseDetail = () => {
           <CourseSidebar 
             course={course}
             modules={course.modules}
-            completedModules={completedModules}
+            completedModules={completedModuleIds}
             selectedModule={selectedModule}
             onModuleClick={handleModuleClick}
             getModuleIcon={getModuleIcon}
@@ -321,7 +353,7 @@ const CourseDetail = () => {
 interface CourseSidebarProps {
   course: typeof courses[0];
   modules: Module[];
-  completedModules: number;
+  completedModules: string[];
   selectedModule: Module | null;
   onModuleClick: (module: Module) => void;
   getModuleIcon: (type: string) => any;
@@ -341,10 +373,10 @@ function CourseSidebar({
         <div className="p-4 border-b sticky top-0 bg-background z-10">
           <h2 className="font-semibold text-lg mb-2">Course Content</h2>
           <p className="text-sm text-muted-foreground">
-            {completedModules} of {modules.length} completed
+            {completedModules.length} of {modules.length} completed
           </p>
           <Progress 
-            value={(completedModules / modules.length) * 100} 
+            value={(completedModules.length / modules.length) * 100} 
             className="h-1 mt-2" 
           />
         </div>
@@ -355,7 +387,7 @@ function CourseSidebar({
             <SidebarMenu>
               {modules.map((module, index) => {
                 const Icon = getModuleIcon(module.type);
-                const isCompleted = index < completedModules;
+                const isCompleted = completedModules.includes(module.id);
                 const isActive = selectedModule?.id === module.id;
                 
                 return (
