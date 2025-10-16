@@ -21,6 +21,8 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { SurveyBuilder } from "@/components/SurveyBuilder";
 import { DataAnalysisSandbox } from "@/components/DataAnalysisSandbox";
+import { Quiz } from "@/components/Quiz";
+import { getModuleContent } from "@/data/moduleContent";
 import {
   Dialog,
   DialogContent,
@@ -251,14 +253,27 @@ const CourseDetail = () => {
 
                     {selectedModule.type === "quiz" && (
                       <div className="space-y-6">
-                        <div className="text-center py-12">
-                          <FileQuestion className="w-20 h-20 text-primary mx-auto mb-4" />
-                          <h3 className="text-xl font-semibold mb-2">Quiz: Test Your Knowledge</h3>
-                          <p className="text-muted-foreground mb-6">
-                            Complete this quiz to assess your understanding of the previous lessons.
-                          </p>
-                          <Button size="lg">Start Quiz</Button>
-                        </div>
+                        {(() => {
+                          const moduleContent = getModuleContent(selectedModule.id);
+                          if (moduleContent?.quizQuestions) {
+                            return (
+                              <Quiz 
+                                questions={moduleContent.quizQuestions} 
+                                onComplete={handleNextLesson}
+                              />
+                            );
+                          }
+                          return (
+                            <div className="text-center py-12">
+                              <FileQuestion className="w-20 h-20 text-primary mx-auto mb-4" />
+                              <h3 className="text-xl font-semibold mb-2">Quiz: Test Your Knowledge</h3>
+                              <p className="text-muted-foreground mb-6">
+                                Complete this quiz to assess your understanding of the previous lessons.
+                              </p>
+                              <Button size="lg" onClick={handleNextLesson}>Start Quiz</Button>
+                            </div>
+                          );
+                        })()}
                       </div>
                     )}
 
