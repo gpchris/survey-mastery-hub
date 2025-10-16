@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
 import { useParams, Link } from "react-router-dom";
-import { courses, getUserProgress } from "@/data/courses";
+import { courses } from "@/data/courses";
+import { useCourseProgress } from "@/hooks/useCourseProgress";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -44,7 +45,8 @@ import type { Module } from "@/data/courses";
 const CourseDetail = () => {
   const { courseId } = useParams();
   const course = courses.find((c) => c.id === courseId);
-  const progress = course ? getUserProgress(course.id) : 0;
+  const { getProgress } = useCourseProgress();
+  const progress = course ? getProgress(course.id) : 0;
   const [sandboxOpen, setSandboxOpen] = useState(false);
   const [currentSandbox, setCurrentSandbox] = useState<"survey-builder" | "data-analysis" | null>(null);
   const [selectedModule, setSelectedModule] = useState<Module | null>(null);
