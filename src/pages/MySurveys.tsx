@@ -89,7 +89,7 @@ const MySurveys = () => {
                 </div>
                 <p className="text-gray-700 mb-4">
                   Learn the fundamentals of creating surveys, analyzing data, and getting the most out of SurveyMonkey. 
-                  Our Getting Started course takes just 35 minutes!
+                  Our Getting Started course takes just 9 minutes!
                 </p>
                 <div className="flex gap-3">
                   <Button 
@@ -174,11 +174,11 @@ const MySurveys = () => {
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold mb-2">Getting Started Course</h3>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Master the fundamentals of creating professional surveys in just 35 minutes. 
+                    Master the fundamentals of creating professional surveys in just 9 minutes. 
                     Learn to navigate the platform, choose from templates, and understand essential question types.
                   </p>
                   <div className="flex flex-wrap gap-2 mb-4">
-                    <Badge variant="outline">35 min</Badge>
+                    <Badge variant="outline">9 min</Badge>
                     <Badge variant="outline">Beginner Friendly</Badge>
                     <Badge variant="outline">6 Modules</Badge>
                   </div>

@@ -28,7 +28,7 @@ export const courses: Course[] = [
     id: "getting-started",
     title: "Getting Started with SurveyMonkey",
     description: "Master the fundamentals of creating professional surveys. Learn to navigate the platform, choose from templates or build from scratch, and understand the essential survey creation workflow.",
-    duration: "35 min",
+    duration: "9 min",
     skills: ["Survey Creation", "Question Types", "Platform Navigation", "Templates"],
     participants: 15234,
     category: "Beginner",
