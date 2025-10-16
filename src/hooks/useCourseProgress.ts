@@ -16,7 +16,13 @@ export const useCourseProgress = () => {
     if (user) {
       const stored = localStorage.getItem(`course_progress_${user.id}`);
       if (stored) {
-        setProgress(JSON.parse(stored));
+        const parsed = JSON.parse(stored);
+        // Force reset Getting Started course to 0%
+        if (parsed["getting-started"]) {
+          delete parsed["getting-started"];
+          localStorage.setItem(`course_progress_${user.id}`, JSON.stringify(parsed));
+        }
+        setProgress(parsed);
       }
     }
   }, [user]);
