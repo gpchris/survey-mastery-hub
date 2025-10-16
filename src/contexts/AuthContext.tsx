@@ -38,6 +38,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     
     setUser(mockUser);
     localStorage.setItem("auth_user", JSON.stringify(mockUser));
+    
+    // Set up some mock course progress
+    const mockProgress = {
+      [mockUser.id]: {
+        "1": { progress: 100, lastAccessed: new Date().toISOString() }, // Complete
+        "2": { progress: 65, lastAccessed: new Date().toISOString() }, // In progress
+        "3": { progress: 100, lastAccessed: new Date(Date.now() - 86400000).toISOString() }, // Complete (1 day ago)
+        "4": { progress: 30, lastAccessed: new Date(Date.now() - 172800000).toISOString() }, // In progress (2 days ago)
+      }
+    };
+    localStorage.setItem("course_progress", JSON.stringify(mockProgress));
   };
 
   const signup = async (email: string, password: string, name: string) => {
@@ -52,6 +63,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     
     setUser(mockUser);
     localStorage.setItem("auth_user", JSON.stringify(mockUser));
+    
+    // Set up some mock course progress for new users
+    const mockProgress = {
+      [mockUser.id]: {
+        "1": { progress: 100, lastAccessed: new Date().toISOString() },
+        "2": { progress: 65, lastAccessed: new Date().toISOString() },
+        "3": { progress: 100, lastAccessed: new Date(Date.now() - 86400000).toISOString() },
+        "4": { progress: 30, lastAccessed: new Date(Date.now() - 172800000).toISOString() },
+      }
+    };
+    localStorage.setItem("course_progress", JSON.stringify(mockProgress));
   };
 
   const logout = () => {
