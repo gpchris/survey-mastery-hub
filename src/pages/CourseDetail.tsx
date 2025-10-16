@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
 import { useParams, Link } from "react-router-dom";
 import { courses } from "@/data/courses";
-import { getModuleContent } from "@/data/moduleContent";
 import { useCourseProgress } from "@/hooks/useCourseProgress";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -17,8 +16,7 @@ import {
   FileQuestion, 
   Activity, 
   Boxes,
-  ChevronRight,
-  Lightbulb
+  ChevronRight
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { SurveyBuilder } from "@/components/SurveyBuilder";
@@ -214,8 +212,49 @@ const CourseDetail = () => {
                     </div>
                   </div>
 
-                  {selectedModule.type === "sandbox" ? (
-                    <Card className="p-8">
+                  <Card className="p-8">
+                    {selectedModule.type === "video" && (
+                      <div className="space-y-6">
+                        <div className="aspect-video bg-accent/20 rounded-lg flex items-center justify-center">
+                          <PlayCircle className="w-20 h-20 text-muted-foreground" />
+                        </div>
+                        <div className="space-y-4">
+                          <h3 className="text-xl font-semibold">Video Content</h3>
+                          <p className="text-muted-foreground">
+                            This lesson covers key concepts and practical demonstrations. 
+                            Watch the video above to learn more about {selectedModule.title.toLowerCase()}.
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {selectedModule.type === "quiz" && (
+                      <div className="space-y-6">
+                        <div className="text-center py-12">
+                          <FileQuestion className="w-20 h-20 text-primary mx-auto mb-4" />
+                          <h3 className="text-xl font-semibold mb-2">Quiz: Test Your Knowledge</h3>
+                          <p className="text-muted-foreground mb-6">
+                            Complete this quiz to assess your understanding of the previous lessons.
+                          </p>
+                          <Button size="lg">Start Quiz</Button>
+                        </div>
+                      </div>
+                    )}
+
+                    {selectedModule.type === "activity" && (
+                      <div className="space-y-6">
+                        <div className="text-center py-12">
+                          <Activity className="w-20 h-20 text-primary mx-auto mb-4" />
+                          <h3 className="text-xl font-semibold mb-2">Practical Activity</h3>
+                          <p className="text-muted-foreground mb-6">
+                            Apply what you've learned in this hands-on exercise.
+                          </p>
+                          <Button size="lg">Start Activity</Button>
+                        </div>
+                      </div>
+                    )}
+
+                    {selectedModule.type === "sandbox" && (
                       <div className="text-center py-12">
                         <Boxes className="w-20 h-20 text-primary mx-auto mb-4" />
                         <h3 className="text-xl font-semibold mb-2">Interactive Sandbox</h3>
@@ -229,111 +268,8 @@ const CourseDetail = () => {
                           Launch Sandbox
                         </Button>
                       </div>
-                    </Card>
-                  ) : (
-                    <>
-                      {(() => {
-                        const moduleContent = getModuleContent(course.id, selectedModule.id);
-                        
-                        if (!moduleContent) {
-                          return (
-                            <Card className="p-8">
-                              <div className="space-y-6">
-                                {selectedModule.type === "video" && (
-                                  <>
-                                    <div className="aspect-video bg-accent/20 rounded-lg flex items-center justify-center">
-                                      <PlayCircle className="w-20 h-20 text-muted-foreground" />
-                                    </div>
-                                    <div className="space-y-4">
-                                      <h3 className="text-xl font-semibold">Video Content</h3>
-                                      <p className="text-muted-foreground">
-                                        This lesson covers key concepts and practical demonstrations. 
-                                        Watch the video above to learn more about {selectedModule.title.toLowerCase()}.
-                                      </p>
-                                    </div>
-                                  </>
-                                )}
-                                {selectedModule.type === "quiz" && (
-                                  <div className="text-center py-12">
-                                    <FileQuestion className="w-20 h-20 text-primary mx-auto mb-4" />
-                                    <h3 className="text-xl font-semibold mb-2">Quiz: Test Your Knowledge</h3>
-                                    <p className="text-muted-foreground mb-6">
-                                      Complete this quiz to assess your understanding of the previous lessons.
-                                    </p>
-                                    <Button size="lg">Start Quiz</Button>
-                                  </div>
-                                )}
-                                {selectedModule.type === "activity" && (
-                                  <div className="text-center py-12">
-                                    <Activity className="w-20 h-20 text-primary mx-auto mb-4" />
-                                    <h3 className="text-xl font-semibold mb-2">Practical Activity</h3>
-                                    <p className="text-muted-foreground mb-6">
-                                      Apply what you've learned in this hands-on exercise.
-                                    </p>
-                                    <Button size="lg">Start Activity</Button>
-                                  </div>
-                                )}
-                              </div>
-                            </Card>
-                          );
-                        }
-
-                        return (
-                          <>
-                            <Card className="p-8 mb-6">
-                              <div className="prose prose-slate max-w-none">
-                                {selectedModule.type === "video" && (
-                                  <div className="aspect-video bg-accent/20 rounded-lg flex items-center justify-center mb-6">
-                                    <PlayCircle className="w-20 h-20 text-muted-foreground" />
-                                  </div>
-                                )}
-                                <div 
-                                  className="text-foreground" 
-                                  dangerouslySetInnerHTML={{ 
-                                    __html: moduleContent.content
-                                      .replace(/\n## /g, '\n<h2 class="text-2xl font-bold mt-8 mb-4">')
-                                      .replace(/\n### /g, '\n<h3 class="text-xl font-semibold mt-6 mb-3">')
-                                      .replace(/\n#### /g, '\n<h4 class="text-lg font-medium mt-4 mb-2">')
-                                      .replace(/<h2/g, '</h2><h2')
-                                      .replace(/<h3/g, '</h3><h3')
-                                      .replace(/<h4/g, '</h4><h4')
-                                      .replace(/\n\n/g, '</p><p class="mb-4">')
-                                      .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold">$1</strong>')
-                                      .replace(/^(.+)$/gm, '<p class="mb-4">$1</p>')
-                                  }} 
-                                />
-                              </div>
-                            </Card>
-
-                            {moduleContent.keyTakeaways && moduleContent.keyTakeaways.length > 0 && (
-                              <Card className="p-6 bg-primary/5 border-primary/20">
-                                <div className="flex items-start gap-4">
-                                  <Lightbulb className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
-                                  <div>
-                                    <h3 className="text-lg font-semibold mb-3">Key Takeaways</h3>
-                                    <ul className="space-y-2">
-                                      {moduleContent.keyTakeaways.map((takeaway, index) => (
-                                        <li key={index} className="flex items-start gap-2">
-                                          <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                                          <span className="text-foreground">{takeaway}</span>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                </div>
-                              </Card>
-                            )}
-
-                            {selectedModule.type === "quiz" && (
-                              <div className="mt-6 text-center">
-                                <Button size="lg">Start Quiz</Button>
-                              </div>
-                            )}
-                          </>
-                        );
-                      })()}
-                    </>
-                  )}
+                    )}
+                  </Card>
 
                   <div className="flex items-center justify-between mt-6">
                     <Button variant="outline">Previous Lesson</Button>
