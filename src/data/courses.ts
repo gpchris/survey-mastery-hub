@@ -213,7 +213,7 @@ export const courses: Course[] = [
 
 export const getUserProgress = (courseId: string): number => {
   const progressMap: { [key: string]: number } = {
-    "getting-started": 75,
+    "getting-started": 0,
     "survey-design": 45,
     "data-analysis": 30,
     "response-collection": 60,
