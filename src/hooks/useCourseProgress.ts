@@ -43,15 +43,28 @@ export const useCourseProgress = () => {
   };
 
   const getProgress = (courseId: string): number => {
+    // Force Getting Started course to always show 0%
+    if (courseId === "getting-started") {
+      return 0;
+    }
     return progress[courseId]?.percentage || 0;
   };
 
   const getCompletedModules = (courseId: string): string[] => {
+    // Force Getting Started course to have no completed modules
+    if (courseId === "getting-started") {
+      return [];
+    }
     return progress[courseId]?.completedModules || [];
   };
 
   const completeModule = (courseId: string, moduleId: string, totalModules: number) => {
     if (!user) return;
+    
+    // Prevent completing modules in Getting Started course
+    if (courseId === "getting-started") {
+      return;
+    }
     
     const currentCompleted = progress[courseId]?.completedModules || [];
     if (!currentCompleted.includes(moduleId)) {
