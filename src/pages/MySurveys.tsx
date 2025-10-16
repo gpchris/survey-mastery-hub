@@ -5,10 +5,15 @@ import { Button } from "@/components/ui/button";
 import { FileText, Copy, Sparkles, GraduationCap, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
+import { useCourseProgress } from "@/hooks/useCourseProgress";
 
 const MySurveys = () => {
   const navigate = useNavigate();
+  const { getProgress } = useCourseProgress();
   const [showTrainingBanner, setShowTrainingBanner] = useState(true);
+  
+  // Hide banner if Getting Started course is completed
+  const isGettingStartedCompleted = getProgress("getting-started") === 100;
 
   const options = [
     {
@@ -37,7 +42,7 @@ const MySurveys = () => {
       
       <main className="container mx-auto px-4 py-8">
         {/* Training Center Banner */}
-        {showTrainingBanner && (
+        {showTrainingBanner && !isGettingStartedCompleted && (
           <Card className="mb-8 p-6 bg-gradient-to-r from-primary/10 via-primary/5 to-transparent border-primary/20 relative">
             <Button
               variant="ghost"
