@@ -1,10 +1,10 @@
-import gettingStartedImg from "@/assets/course-getting-started.jpg";
-import dataAnalysisImg from "@/assets/course-data-analysis.jpg";
-import employeeEngagementImg from "@/assets/course-employee-engagement.jpg";
-import reportingImg from "@/assets/course-reporting.jpg";
-import advancedAnalyticsImg from "@/assets/course-advanced-analytics.jpg";
-import aiSurveysImg from "@/assets/course-ai-surveys.jpg";
-import specialCasesImg from "@/assets/course-special-cases.jpg";
+import gettingStartedImg from "../assets/course-getting-started.jpg";
+import dataAnalysisImg from "../assets/course-data-analysis.jpg";
+import employeeEngagementImg from "../assets/course-employee-engagement.jpg";
+import reportingImg from "../assets/course-reporting.jpg";
+import advancedAnalyticsImg from "../assets/course-advanced-analytics.jpg";
+import aiSurveysImg from "../assets/course-ai-surveys.jpg";
+import specialCasesImg from "../assets/course-special-cases.jpg";
 
 export interface Course {
   id: string;
