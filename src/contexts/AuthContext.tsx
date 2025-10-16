@@ -39,16 +39,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(mockUser);
     localStorage.setItem("auth_user", JSON.stringify(mockUser));
     
-    // Set up some mock course progress
+    // Set up some mock course progress with the correct key format
     const mockProgress = {
-      [mockUser.id]: {
-        "1": { progress: 100, lastAccessed: new Date().toISOString() }, // Complete
-        "2": { progress: 65, lastAccessed: new Date().toISOString() }, // In progress
-        "3": { progress: 100, lastAccessed: new Date(Date.now() - 86400000).toISOString() }, // Complete (1 day ago)
-        "4": { progress: 30, lastAccessed: new Date(Date.now() - 172800000).toISOString() }, // In progress (2 days ago)
-      }
+      "1": 100, // Complete
+      "2": 65,  // In progress
+      "3": 100, // Complete
+      "4": 30,  // In progress
     };
-    localStorage.setItem("course_progress", JSON.stringify(mockProgress));
+    localStorage.setItem(`course_progress_${mockUser.id}`, JSON.stringify(mockProgress));
   };
 
   const signup = async (email: string, password: string, name: string) => {
@@ -66,14 +64,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     
     // Set up some mock course progress for new users
     const mockProgress = {
-      [mockUser.id]: {
-        "1": { progress: 100, lastAccessed: new Date().toISOString() },
-        "2": { progress: 65, lastAccessed: new Date().toISOString() },
-        "3": { progress: 100, lastAccessed: new Date(Date.now() - 86400000).toISOString() },
-        "4": { progress: 30, lastAccessed: new Date(Date.now() - 172800000).toISOString() },
-      }
+      "1": 100,
+      "2": 65,
+      "3": 100,
+      "4": 30,
     };
-    localStorage.setItem("course_progress", JSON.stringify(mockProgress));
+    localStorage.setItem(`course_progress_${mockUser.id}`, JSON.stringify(mockProgress));
   };
 
   const logout = () => {
