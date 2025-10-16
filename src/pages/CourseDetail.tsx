@@ -261,8 +261,17 @@ const CourseDetail = () => {
                   <Card className="p-8">
                     {selectedModule.type === "video" && (
                       <div className="space-y-6">
-                        <div className="aspect-video bg-accent/20 rounded-lg flex items-center justify-center">
-                          <PlayCircle className="w-20 h-20 text-muted-foreground" />
+                        <div className="aspect-video bg-black rounded-lg overflow-hidden">
+                          <iframe
+                            width="100%"
+                            height="100%"
+                            src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0"
+                            title="Course Video"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            className="w-full h-full"
+                          />
                         </div>
                         <div className="space-y-4">
                           <h3 className="text-xl font-semibold">Video Content</h3>
