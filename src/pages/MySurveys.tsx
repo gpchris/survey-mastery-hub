@@ -1,41 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ProductHeader } from "@/components/ProductHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileText, Copy, Sparkles, GraduationCap, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 
 const MySurveys = () => {
   const navigate = useNavigate();
-  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
   const [showTrainingBanner, setShowTrainingBanner] = useState(true);
-
-  // Show welcome modal for new users (you can enhance this with localStorage or user preferences)
-  useEffect(() => {
-    const hasSeenWelcome = localStorage.getItem("hasSeenWelcome");
-    if (!hasSeenWelcome) {
-      setShowWelcomeModal(true);
-    }
-  }, []);
-
-  const handleWelcomeClose = () => {
-    localStorage.setItem("hasSeenWelcome", "true");
-    setShowWelcomeModal(false);
-  };
-
-  const handleStartTraining = () => {
-    localStorage.setItem("hasSeenWelcome", "true");
-    setShowWelcomeModal(false);
-    navigate("/course/getting-started");
-  };
 
   const options = [
     {
@@ -151,79 +124,6 @@ const MySurveys = () => {
           </div>
         </div>
       </main>
-
-      {/* Welcome Modal */}
-      <Dialog open={showWelcomeModal} onOpenChange={setShowWelcomeModal}>
-        <DialogContent className="sm:max-w-2xl">
-          <DialogHeader>
-            <DialogTitle className="text-2xl flex items-center gap-2">
-              <GraduationCap className="w-8 h-8 text-primary" />
-              Welcome to SurveyMonkey!
-            </DialogTitle>
-            <DialogDescription className="text-base pt-2">
-              Get the most out of your experience by starting with our training resources
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="space-y-6 py-4">
-            <Card className="p-6 border-2 border-primary/20 bg-primary/5">
-              <div className="flex items-start gap-4">
-                <div className="w-16 h-16 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
-                  <GraduationCap className="w-8 h-8 text-primary" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold mb-2">Getting Started Course</h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Master the fundamentals of creating professional surveys in just 9 minutes. 
-                    Learn to navigate the platform, choose from templates, and understand essential question types.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    <Badge variant="outline">9 min</Badge>
-                    <Badge variant="outline">Beginner Friendly</Badge>
-                    <Badge variant="outline">6 Modules</Badge>
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    ✓ Platform Navigation • ✓ Question Types • ✓ Templates • ✓ Interactive Sandbox
-                  </div>
-                </div>
-              </div>
-            </Card>
-
-            <div className="grid grid-cols-3 gap-4 text-center">
-              <div className="p-4 rounded-lg bg-accent">
-                <p className="text-2xl font-bold text-primary mb-1">9+</p>
-                <p className="text-xs text-muted-foreground">Courses Available</p>
-              </div>
-              <div className="p-4 rounded-lg bg-accent">
-                <p className="text-2xl font-bold text-primary mb-1">15K+</p>
-                <p className="text-xs text-muted-foreground">Learners</p>
-              </div>
-              <div className="p-4 rounded-lg bg-accent">
-                <p className="text-2xl font-bold text-primary mb-1">100%</p>
-                <p className="text-xs text-muted-foreground">Free Training</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex gap-3">
-            <Button 
-              onClick={handleStartTraining}
-              className="flex-1 gap-2"
-              size="lg"
-            >
-              <GraduationCap className="w-5 h-5" />
-              Start Getting Started Course
-            </Button>
-            <Button 
-              variant="outline"
-              onClick={handleWelcomeClose}
-              size="lg"
-            >
-              Maybe Later
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
