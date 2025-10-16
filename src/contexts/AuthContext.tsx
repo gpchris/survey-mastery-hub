@@ -22,7 +22,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const storedUser = localStorage.getItem("auth_user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      const user = JSON.parse(storedUser);
+      setUser(user);
+      console.log("Loaded user from localStorage:", user);
+      
+      // Ensure mock progress data exists for this user
+      const progressKey = `course_progress_${user.id}`;
+      const existingProgress = localStorage.getItem(progressKey);
+      console.log("Existing progress for user:", existingProgress);
+      
+      if (!existingProgress) {
+        const mockProgress = {
+          "1": 100,
+          "2": 65,
+          "3": 100,
+          "4": 30,
+        };
+        localStorage.setItem(progressKey, JSON.stringify(mockProgress));
+        console.log("Set mock progress for existing user:", mockProgress);
+      }
     }
   }, []);
 

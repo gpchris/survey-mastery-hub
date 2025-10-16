@@ -12,8 +12,11 @@ export const useCourseProgress = () => {
   useEffect(() => {
     if (user) {
       const stored = localStorage.getItem(`course_progress_${user.id}`);
+      console.log(`Loading progress for user ${user.id}:`, stored);
       if (stored) {
-        setProgress(JSON.parse(stored));
+        const parsed = JSON.parse(stored);
+        console.log("Parsed progress:", parsed);
+        setProgress(parsed);
       }
     }
   }, [user]);
@@ -27,7 +30,9 @@ export const useCourseProgress = () => {
   };
 
   const getProgress = (courseId: string): number => {
-    return progress[courseId] || 0;
+    const prog = progress[courseId] || 0;
+    console.log(`Getting progress for course ${courseId}:`, prog);
+    return prog;
   };
 
   return { progress, updateProgress, getProgress };
