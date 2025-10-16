@@ -26,11 +26,9 @@ export const Navigation = () => {
 
   const navItems = [
     ...(!isAuthenticated ? [{ label: "Home", path: "/" }] : []),
+    ...(isAuthenticated ? [{ label: "Dashboard", path: "/dashboard" }] : []),
     { label: "Courses", path: "/courses" },
-    ...(isAuthenticated ? [
-      { label: "My Surveys", path: "/my-surveys" },
-      { label: "Dashboard", path: "/dashboard" }
-    ] : []),
+    ...(isAuthenticated ? [{ label: "My Surveys", path: "/my-surveys" }] : []),
   ];
 
   return (
