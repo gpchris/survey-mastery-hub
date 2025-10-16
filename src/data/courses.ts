@@ -18,8 +18,9 @@ export interface Module {
   id: string;
   title: string;
   duration: string;
-  type: "video" | "quiz" | "activity";
+  type: "video" | "quiz" | "activity" | "sandbox";
   completed?: boolean;
+  sandboxType?: "survey-builder" | "data-analysis";
 }
 
 export const courses: Course[] = [
@@ -36,7 +37,8 @@ export const courses: Course[] = [
       { id: "2", title: "Creating Your First Survey - Four Ways", duration: "8 min", type: "video" },
       { id: "3", title: "Using Templates vs. Starting from Scratch", duration: "7 min", type: "video" },
       { id: "4", title: "Overview of Question Types", duration: "9 min", type: "video" },
-      { id: "5", title: "Quiz: Platform Basics", duration: "5 min", type: "quiz" },
+      { id: "5", title: "Hands-On: Build Your First Survey", duration: "15 min", type: "sandbox", sandboxType: "survey-builder" },
+      { id: "6", title: "Quiz: Platform Basics", duration: "5 min", type: "quiz" },
     ],
   },
   {
@@ -52,10 +54,11 @@ export const courses: Course[] = [
       { id: "1", title: "Open-Ended Questions: Comment Box, Textbox, File Upload", duration: "10 min", type: "video" },
       { id: "2", title: "Multiple Choice Questions: MC, Checkboxes, Dropdowns, Image Choice", duration: "12 min", type: "video" },
       { id: "3", title: "Ranking & Rating: Matrix, Star Rating, Slider, NPS", duration: "12 min", type: "video" },
-      { id: "4", title: "5 Tips for Writing Great Surveys", duration: "8 min", type: "video" },
-      { id: "5", title: "Accessibility & Inclusive Language Design", duration: "8 min", type: "video" },
-      { id: "6", title: "Using Question Bank for Certified Questions", duration: "6 min", type: "video" },
-      { id: "7", title: "Quiz: Question Type Selection", duration: "4 min", type: "quiz" },
+      { id: "4", title: "Practice: Design a Multi-Question Survey", duration: "20 min", type: "sandbox", sandboxType: "survey-builder" },
+      { id: "5", title: "5 Tips for Writing Great Surveys", duration: "8 min", type: "video" },
+      { id: "6", title: "Accessibility & Inclusive Language Design", duration: "8 min", type: "video" },
+      { id: "7", title: "Using Question Bank for Certified Questions", duration: "6 min", type: "video" },
+      { id: "8", title: "Quiz: Question Type Selection", duration: "4 min", type: "quiz" },
     ],
     industryStats: {
       industry: "Market Research",
@@ -75,9 +78,10 @@ export const courses: Course[] = [
       { id: "2", title: "Understanding Response Statuses & Quality", duration: "6 min", type: "video" },
       { id: "3", title: "Analyzing Text Responses: Sentiment, Word Cloud, Tagging", duration: "10 min", type: "video" },
       { id: "4", title: "Chart Types & Custom Data Tables", duration: "10 min", type: "video" },
-      { id: "5", title: "Filters, Compare Rules & Creating Views", duration: "10 min", type: "video" },
-      { id: "6", title: "Basic Statistics & Statistical Significance", duration: "7 min", type: "video" },
-      { id: "7", title: "Quiz: Analysis Fundamentals", duration: "4 min", type: "quiz" },
+      { id: "5", title: "Interactive Lab: Explore Live Survey Results", duration: "25 min", type: "sandbox", sandboxType: "data-analysis" },
+      { id: "6", title: "Filters, Compare Rules & Creating Views", duration: "10 min", type: "video" },
+      { id: "7", title: "Basic Statistics & Statistical Significance", duration: "7 min", type: "video" },
+      { id: "8", title: "Quiz: Analysis Fundamentals", duration: "4 min", type: "quiz" },
     ],
   },
   {
@@ -92,8 +96,9 @@ export const courses: Course[] = [
       { id: "1", title: "Sharing Survey Results: Access Control & Options", duration: "8 min", type: "video" },
       { id: "2", title: "Creating Shared Data Pages & Dashboards", duration: "10 min", type: "video" },
       { id: "3", title: "Export Formats: PDF, PPT, XLS, CSV, SPSS", duration: "12 min", type: "video" },
-      { id: "4", title: "Exporting Individual Questions & Custom Charts", duration: "6 min", type: "video" },
-      { id: "5", title: "Quiz: Sharing & Reporting Best Practices", duration: "4 min", type: "quiz" },
+      { id: "4", title: "Practice: Create Reports & Export Data", duration: "20 min", type: "sandbox", sandboxType: "data-analysis" },
+      { id: "5", title: "Exporting Individual Questions & Custom Charts", duration: "6 min", type: "video" },
+      { id: "6", title: "Quiz: Sharing & Reporting Best Practices", duration: "4 min", type: "quiz" },
     ],
   },
   {

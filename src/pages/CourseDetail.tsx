@@ -1,16 +1,28 @@
+import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
 import { useParams, Link } from "react-router-dom";
 import { courses, getUserProgress } from "@/data/courses";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Clock, Users, CheckCircle2, Circle, PlayCircle, FileQuestion, Activity } from "lucide-react";
+import { ArrowLeft, Clock, Users, CheckCircle2, Circle, PlayCircle, FileQuestion, Activity, Boxes } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { SurveyBuilder } from "@/components/SurveyBuilder";
+import { DataAnalysisSandbox } from "@/components/DataAnalysisSandbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const CourseDetail = () => {
   const { courseId } = useParams();
   const course = courses.find((c) => c.id === courseId);
   const progress = course ? getUserProgress(course.id) : 0;
+  const [sandboxOpen, setSandboxOpen] = useState(false);
+  const [currentSandbox, setCurrentSandbox] = useState<"survey-builder" | "data-analysis" | null>(null);
 
   if (!course) {
     return (
@@ -38,9 +50,16 @@ const CourseDetail = () => {
         return FileQuestion;
       case "activity":
         return Activity;
+      case "sandbox":
+        return Boxes;
       default:
         return Circle;
     }
+  };
+
+  const openSandbox = (sandboxType: "survey-builder" | "data-analysis") => {
+    setCurrentSandbox(sandboxType);
+    setSandboxOpen(true);
   };
 
   return (
@@ -136,9 +155,14 @@ const CourseDetail = () => {
                 return (
                   <div
                     key={module.id}
-                    className={`flex items-center gap-4 p-4 rounded-lg transition-colors ${
+                    className={`group flex items-center gap-4 p-4 rounded-lg transition-all ${
                       isCompleted ? "bg-accent/20" : "bg-muted/30"
-                    }`}
+                    } ${module.type === "sandbox" ? "hover:shadow-md hover:bg-primary/5 cursor-pointer" : ""}`}
+                    onClick={() => {
+                      if (module.type === "sandbox" && module.sandboxType) {
+                        openSandbox(module.sandboxType);
+                      }
+                    }}
                   >
                     <div className={`flex-shrink-0 ${isCompleted ? "text-primary" : "text-muted-foreground"}`}>
                       {isCompleted ? (
@@ -147,14 +171,24 @@ const CourseDetail = () => {
                         <Circle className="w-6 h-6" />
                       )}
                     </div>
-                    <Icon className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                    <Icon className={`w-5 h-5 flex-shrink-0 ${module.type === "sandbox" ? "text-primary group-hover:scale-110 transition-transform" : "text-muted-foreground"}`} />
                     <div className="flex-1 min-w-0">
                       <h3 className="font-medium text-foreground">{module.title}</h3>
+                      {module.type === "sandbox" && (
+                        <Badge variant="secondary" className="mt-1 text-xs">
+                          Interactive Sandbox
+                        </Badge>
+                      )}
                     </div>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground flex-shrink-0">
                       <Clock className="w-4 h-4" />
                       <span>{module.duration}</span>
                     </div>
+                    {module.type === "sandbox" && (
+                      <Button size="sm" variant="outline" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                        Launch
+                      </Button>
+                    )}
                   </div>
                 );
               })}
@@ -162,6 +196,29 @@ const CourseDetail = () => {
           </Card>
         </div>
       </main>
+
+      {/* Sandbox Dialog */}
+      <Dialog open={sandboxOpen} onOpenChange={setSandboxOpen}>
+        <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Boxes className="w-6 h-6 text-primary" />
+              {currentSandbox === "survey-builder" ? "Survey Builder Sandbox" : "Data Analysis Sandbox"}
+            </DialogTitle>
+            <DialogDescription>
+              Practice building and analyzing surveys in a safe, interactive environment
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-6">
+            {currentSandbox === "survey-builder" && (
+              <SurveyBuilder onComplete={() => setSandboxOpen(false)} />
+            )}
+            {currentSandbox === "data-analysis" && (
+              <DataAnalysisSandbox onComplete={() => setSandboxOpen(false)} />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
