@@ -33,10 +33,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       if (!existingProgress) {
         const mockProgress = {
-          "1": 100,
-          "2": 65,
-          "3": 100,
-          "4": 30,
+          "getting-started": 100,
+          "survey-design": 65,
+          "data-analysis": 100,
+          "employee-engagement": 30,
         };
         localStorage.setItem(progressKey, JSON.stringify(mockProgress));
         console.log("Set mock progress for existing user:", mockProgress);
@@ -59,10 +59,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     
     // Set up some mock course progress with the correct key format
     const mockProgress = {
-      "1": 100, // Complete
-      "2": 65,  // In progress
-      "3": 100, // Complete
-      "4": 30,  // In progress
+      "getting-started": 100,
+      "survey-design": 65,
+      "data-analysis": 100,
+      "employee-engagement": 30,
     };
     localStorage.setItem(`course_progress_${mockUser.id}`, JSON.stringify(mockProgress));
   };
@@ -82,10 +82,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     
     // Set up some mock course progress for new users
     const mockProgress = {
-      "1": 100,
-      "2": 65,
-      "3": 100,
-      "4": 30,
+      "getting-started": 100,
+      "survey-design": 65,
+      "data-analysis": 100,
+      "employee-engagement": 30,
     };
     localStorage.setItem(`course_progress_${mockUser.id}`, JSON.stringify(mockProgress));
   };
