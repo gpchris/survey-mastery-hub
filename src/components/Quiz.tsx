@@ -4,8 +4,17 @@ import { Card } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle2, XCircle, Trophy, Download, Share2, Linkedin, Twitter, Facebook } from "lucide-react";
+import { CheckCircle2, XCircle, Trophy, Download, Share2, Linkedin, Twitter, Facebook, ArrowRight, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
+
+interface SuggestedCourse {
+  id: string;
+  title: string;
+  duration: string;
+  category: string;
+  imageUrl?: string;
+}
 
 export interface QuizQuestion {
   id: string;
@@ -20,9 +29,10 @@ interface QuizProps {
   onComplete: (score: number) => void;
   courseName?: string;
   moduleName?: string;
+  suggestedCourses?: SuggestedCourse[];
 }
 
-export const Quiz = ({ questions, onComplete, courseName = "Course", moduleName = "Module" }: QuizProps) => {
+export const Quiz = ({ questions, onComplete, courseName = "Course", moduleName = "Module", suggestedCourses = [] }: QuizProps) => {
   const { toast } = useToast();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -205,13 +215,48 @@ export const Quiz = ({ questions, onComplete, courseName = "Course", moduleName 
             </div>
           )}
 
-          <div className="flex gap-3 justify-center">
-            <Button onClick={handleRetry} variant="outline">
-              Retry Quiz
-            </Button>
-            <Button onClick={() => onComplete(percentage)}>
-              Continue Course
-            </Button>
+          <div className="space-y-4">
+            {suggestedCourses.length > 0 && (
+              <div className="border-t pt-6">
+                <h4 className="font-semibold mb-4">Continue Your Learning Journey</h4>
+                <div className="grid gap-3">
+                  {suggestedCourses.map((course) => (
+                    <Link key={course.id} to={`/course/${course.id}`}>
+                      <Card className="p-4 hover:bg-accent transition-colors cursor-pointer">
+                        <div className="flex items-center gap-4">
+                          {course.imageUrl && (
+                            <img 
+                              src={course.imageUrl} 
+                              alt={course.title}
+                              className="w-16 h-16 object-cover rounded"
+                            />
+                          )}
+                          <div className="flex-1">
+                            <h5 className="font-medium mb-1">{course.title}</h5>
+                            <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                              <div className="flex items-center gap-1">
+                                <Clock className="w-3 h-3" />
+                                <span>{course.duration}</span>
+                              </div>
+                              <span className="text-xs px-2 py-0.5 bg-secondary rounded">
+                                {course.category}
+                              </span>
+                            </div>
+                          </div>
+                          <ArrowRight className="w-5 h-5 text-muted-foreground" />
+                        </div>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            <div className="flex gap-3 justify-center pt-4">
+              <Button onClick={handleRetry} variant="outline">
+                Retry Quiz
+              </Button>
+            </div>
           </div>
         </div>
       </Card>

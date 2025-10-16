@@ -120,6 +120,24 @@ const CourseDetail = () => {
     }
   };
 
+  // Get suggested courses based on current course
+  const getSuggestedCourses = () => {
+    if (!course) return [];
+    
+    const suggestions = courses
+      .filter(c => c.id !== course.id)
+      .slice(0, 3)
+      .map(c => ({
+        id: c.id,
+        title: c.title,
+        duration: c.duration,
+        category: c.category,
+        imageUrl: c.imageUrl
+      }));
+    
+    return suggestions;
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Navigation />
@@ -262,6 +280,7 @@ const CourseDetail = () => {
                                 onComplete={handleNextLesson}
                                 courseName={course.title}
                                 moduleName={selectedModule.title}
+                                suggestedCourses={getSuggestedCourses()}
                               />
                             );
                           }
