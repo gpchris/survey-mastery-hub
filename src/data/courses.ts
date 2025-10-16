@@ -33,12 +33,12 @@ export const courses: Course[] = [
     participants: 15234,
     category: "Beginner",
     modules: [
-      { id: "1", title: "Welcome to SurveyMonkey Platform", duration: "6 min", type: "video" },
-      { id: "2", title: "Creating Your First Survey - Four Ways", duration: "8 min", type: "video" },
-      { id: "3", title: "Using Templates vs. Starting from Scratch", duration: "7 min", type: "video" },
-      { id: "4", title: "Overview of Question Types", duration: "9 min", type: "video" },
-      { id: "5", title: "Hands-On: Build Your First Survey", duration: "15 min", type: "sandbox", sandboxType: "survey-builder" },
-      { id: "6", title: "Quiz: Platform Basics", duration: "5 min", type: "quiz" },
+      { id: "1", title: "Welcome to SurveyMonkey Platform", duration: "2 min", type: "video" },
+      { id: "2", title: "Creating Your First Survey - Four Ways", duration: "2 min", type: "video" },
+      { id: "3", title: "Using Templates vs. Starting from Scratch", duration: "1 min", type: "video" },
+      { id: "4", title: "Overview of Question Types", duration: "2 min", type: "video" },
+      { id: "5", title: "Hands-On: Build Your First Survey", duration: "1 min", type: "sandbox", sandboxType: "survey-builder" },
+      { id: "6", title: "Quiz: Platform Basics", duration: "1 min", type: "quiz" },
     ],
   },
   {
