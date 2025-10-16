@@ -1,8 +1,11 @@
 import { Navigation } from "@/components/Navigation";
 import { CourseCard } from "@/components/CourseCard";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
+import { ResumeCard } from "@/components/ResumeCard";
+import { AchievementBadges } from "@/components/AchievementBadges";
 import { courses } from "@/data/courses";
 import { Card } from "@/components/ui/card";
-import { Award, BookOpen, Clock, TrendingUp } from "lucide-react";
+import { Award, BookOpen, Clock, TrendingUp, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -22,18 +25,69 @@ const Dashboard = () => {
 
   const totalProgress = courses.reduce((sum, course) => sum + getProgress(course.id), 0) / courses.length;
 
+  // Find the most recently worked on course with highest progress
+  const mostRecentCourse = inProgressCourses.length > 0
+    ? inProgressCourses.reduce((prev, current) =>
+        getProgress(current.id) > getProgress(prev.id) ? current : prev
+      )
+    : null;
+
+  // Calculate estimated time remaining for most recent course
+  const getEstimatedTime = (courseId: string) => {
+    const course = courses.find((c) => c.id === courseId);
+    if (!course) return 0;
+    const progress = getProgress(courseId);
+    const totalMinutes = parseInt(course.duration);
+    return Math.round((totalMinutes * (100 - progress)) / 100);
+  };
+
+  // Get time-based greeting
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning";
+    if (hour < 18) return "Good afternoon";
+    return "Good evening";
+  };
+
+  // Get recommended action
+  const getRecommendedAction = () => {
+    if (mostRecentCourse) {
+      const timeLeft = getEstimatedTime(mostRecentCourse.id);
+      return `You're just ${timeLeft} minutes away from completing "${mostRecentCourse.title}"`;
+    }
+    if (completedCourses.length > 0) {
+      return "Explore new courses to expand your skills";
+    }
+    return "Start your first course today and begin your learning journey";
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
       
       <main className="container mx-auto px-4 py-12">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-12">
-            <h1 className="text-4xl font-bold mb-2 text-foreground">Welcome back, {user?.name}!</h1>
-            <p className="text-lg text-muted-foreground">
-              Continue your learning journey and track your progress.
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold mb-2 text-foreground">
+              {getGreeting()}, {user?.name}!
+            </h1>
+            <p className="text-lg text-muted-foreground flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-primary" />
+              {getRecommendedAction()}
             </p>
           </div>
+
+          {/* Resume Card */}
+          {mostRecentCourse && (
+            <div className="mb-8">
+              <ResumeCard
+                courseId={mostRecentCourse.id}
+                courseTitle={mostRecentCourse.title}
+                progress={getProgress(mostRecentCourse.id)}
+                estimatedTimeLeft={getEstimatedTime(mostRecentCourse.id)}
+              />
+            </div>
+          )}
 
           {/* Stats Overview */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -88,6 +142,14 @@ const Dashboard = () => {
             </Card>
           </div>
 
+          {/* Achievements Section */}
+          <section className="mb-12">
+            <AchievementBadges
+              completedCourses={completedCourses.length}
+              totalProgress={totalProgress}
+            />
+          </section>
+
           {/* Continue Learning Section */}
           {inProgressCourses.length > 0 && (
             <section className="mb-12">
@@ -96,12 +158,13 @@ const Dashboard = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {inProgressCourses.map((course) => (
-                  <CourseCard
-                    key={course.id}
-                    id={course.id}
-                    title={course.title}
-                    description={course.description}
-                    duration={course.duration}
+                <CourseCard
+                  key={course.id}
+                  id={course.id}
+                  title={course.title}
+                  description={course.description}
+                  duration={course.duration}
+                  industryStats={course.industryStats}
                     skills={course.skills}
                     participants={course.participants}
                     progress={getProgress(course.id)}
@@ -127,6 +190,7 @@ const Dashboard = () => {
                     duration={course.duration}
                     skills={course.skills}
                     participants={course.participants}
+                    industryStats={course.industryStats}
                     progress={100}
                   />
                 ))}
@@ -152,12 +216,14 @@ const Dashboard = () => {
                   duration={course.duration}
                   skills={course.skills}
                   participants={course.participants}
+                  industryStats={course.industryStats}
                 />
               ))}
             </div>
           </section>
         </div>
       </main>
+      <MobileBottomNav />
     </div>
   );
 };

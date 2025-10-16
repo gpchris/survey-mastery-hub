@@ -110,6 +110,11 @@ All colors MUST be HSL.
   }
 }
 
+/* Mobile bottom navigation padding */
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
 @layer base {
   * {
     @apply border-border;

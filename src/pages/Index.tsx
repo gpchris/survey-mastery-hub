@@ -1,4 +1,5 @@
 import { Navigation } from "@/components/Navigation";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { Hero } from "@/components/Hero";
 import { CourseCard } from "@/components/CourseCard";
 import { courses } from "@/data/courses";
@@ -33,6 +34,7 @@ const Index = () => {
                 duration={course.duration}
                 skills={course.skills}
                 participants={course.participants}
+                industryStats={course.industryStats}
               />
             ))}
           </div>
@@ -81,6 +83,7 @@ const Index = () => {
           </div>
         </div>
       </section>
+      <MobileBottomNav />
     </div>
   );
 };

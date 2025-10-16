@@ -13,6 +13,10 @@ interface CourseCardProps {
   participants: number;
   progress?: number;
   imageUrl?: string;
+  industryStats?: {
+    industry: string;
+    completions: number;
+  };
 }
 
 export const CourseCard = ({
@@ -24,6 +28,7 @@ export const CourseCard = ({
   participants,
   progress,
   imageUrl,
+  industryStats,
 }: CourseCardProps) => {
   return (
     <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg border-border bg-card">
@@ -69,6 +74,18 @@ export const CourseCard = ({
               <span>{participants.toLocaleString()}+ learners</span>
             </div>
           </div>
+
+          {/* Industry-specific social proof */}
+          {industryStats && (
+            <div className="mb-4 p-2 bg-primary/5 rounded-lg border border-primary/10">
+              <p className="text-xs text-muted-foreground">
+                <span className="font-medium text-primary">
+                  {industryStats.completions.toLocaleString()}
+                </span>{" "}
+                learners in <span className="font-medium">{industryStats.industry}</span> completed this
+              </p>
+            </div>
+          )}
 
           {progress !== undefined && (
             <div className="mb-4">

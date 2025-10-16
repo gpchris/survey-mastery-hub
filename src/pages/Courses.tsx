@@ -1,4 +1,5 @@
 import { Navigation } from "@/components/Navigation";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { CourseCard } from "@/components/CourseCard";
 import { courses } from "@/data/courses";
 import { Button } from "@/components/ui/button";
@@ -43,6 +44,7 @@ const Courses = () => {
                         duration={course.duration}
                         skills={course.skills}
                         participants={course.participants}
+                        industryStats={course.industryStats}
                       />
                     ))}
                 </div>
@@ -51,6 +53,7 @@ const Courses = () => {
           </Tabs>
         </div>
       </main>
+      <MobileBottomNav />
     </div>
   );
 };
