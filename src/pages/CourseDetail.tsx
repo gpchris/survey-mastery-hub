@@ -260,6 +260,8 @@ const CourseDetail = () => {
                               <Quiz 
                                 questions={moduleContent.quizQuestions} 
                                 onComplete={handleNextLesson}
+                                courseName={course.title}
+                                moduleName={selectedModule.title}
                               />
                             );
                           }

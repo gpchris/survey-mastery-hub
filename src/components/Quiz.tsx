@@ -4,7 +4,8 @@ import { Card } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle2, XCircle, Trophy } from "lucide-react";
+import { CheckCircle2, XCircle, Trophy, Download, Share2, Linkedin, Twitter, Facebook } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export interface QuizQuestion {
   id: string;
@@ -17,9 +18,12 @@ export interface QuizQuestion {
 interface QuizProps {
   questions: QuizQuestion[];
   onComplete: (score: number) => void;
+  courseName?: string;
+  moduleName?: string;
 }
 
-export const Quiz = ({ questions, onComplete }: QuizProps) => {
+export const Quiz = ({ questions, onComplete, courseName = "Course", moduleName = "Module" }: QuizProps) => {
+  const { toast } = useToast();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -64,6 +68,49 @@ export const Quiz = ({ questions, onComplete }: QuizProps) => {
     setQuizCompleted(false);
   };
 
+  const handleDownloadCertificate = () => {
+    toast({
+      title: "Certificate Download",
+      description: "Your certificate is being prepared for download.",
+    });
+    // In a real app, this would generate a PDF certificate
+    console.log("Downloading certificate for:", { courseName, moduleName, score });
+  };
+
+  const handleShare = (platform: string) => {
+    const percentage = Math.round((score / questions.length) * 100);
+    const shareText = `I just completed the ${moduleName} quiz in ${courseName} with a score of ${percentage}%! 🎉`;
+    const shareUrl = window.location.href;
+
+    switch (platform) {
+      case "linkedin":
+        window.open(
+          `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}&summary=${encodeURIComponent(shareText)}`,
+          "_blank"
+        );
+        break;
+      case "twitter":
+        window.open(
+          `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`,
+          "_blank"
+        );
+        break;
+      case "facebook":
+        window.open(
+          `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`,
+          "_blank"
+        );
+        break;
+      case "copy":
+        navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
+        toast({
+          title: "Link Copied!",
+          description: "Share link copied to clipboard.",
+        });
+        break;
+    }
+  };
+
   if (quizCompleted) {
     const percentage = Math.round((score / questions.length) * 100);
     const passed = percentage >= 70;
@@ -91,9 +138,65 @@ export const Quiz = ({ questions, onComplete }: QuizProps) => {
           </div>
 
           {passed ? (
-            <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
-              <CheckCircle2 className="w-6 h-6 text-primary mx-auto mb-2" />
-              <p className="text-sm font-medium">Congratulations! You passed the quiz.</p>
+            <div className="space-y-4">
+              <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+                <CheckCircle2 className="w-6 h-6 text-primary mx-auto mb-2" />
+                <p className="text-sm font-medium">Congratulations! You passed the quiz.</p>
+              </div>
+
+              <div className="border rounded-lg p-6 space-y-4">
+                <h4 className="font-semibold text-center">Get Your Certificate</h4>
+                <p className="text-sm text-muted-foreground text-center">
+                  Download your completion certificate and share your achievement with your network!
+                </p>
+                
+                <Button 
+                  onClick={handleDownloadCertificate} 
+                  className="w-full gap-2"
+                  size="lg"
+                >
+                  <Download className="w-4 h-4" />
+                  Download Certificate
+                </Button>
+
+                <div className="space-y-3">
+                  <p className="text-sm font-medium text-center">Share Your Success</p>
+                  <div className="flex gap-2 justify-center">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => handleShare("linkedin")}
+                      title="Share on LinkedIn"
+                    >
+                      <Linkedin className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => handleShare("twitter")}
+                      title="Share on Twitter"
+                    >
+                      <Twitter className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => handleShare("facebook")}
+                      title="Share on Facebook"
+                    >
+                      <Facebook className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => handleShare("copy")}
+                      title="Copy link"
+                    >
+                      <Share2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
           ) : (
             <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
