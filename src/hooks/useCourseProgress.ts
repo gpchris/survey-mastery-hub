@@ -15,8 +15,12 @@ export const useCourseProgress = () => {
       console.log(`Loading progress for user ${user.id}:`, stored);
       if (stored) {
         const parsed = JSON.parse(stored);
+        // Force reset Getting Started course to 0%
+        parsed["getting-started"] = 0;
         console.log("Parsed progress:", parsed);
         setProgress(parsed);
+        // Save the updated progress back to localStorage
+        localStorage.setItem(`course_progress_${user.id}`, JSON.stringify(parsed));
       }
     }
   }, [user]);
