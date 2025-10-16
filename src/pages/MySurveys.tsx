@@ -1,12 +1,9 @@
-import { Navigation } from "@/components/Navigation";
+import { ProductHeader } from "@/components/ProductHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileText, Copy, Sparkles } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 const MySurveys = () => {
-  const navigate = useNavigate();
-
   const options = [
     {
       icon: FileText,
@@ -29,12 +26,12 @@ const MySurveys = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
+    <div className="min-h-screen bg-white">
+      <ProductHeader />
       
       <main className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold text-center mb-16 text-foreground">
+          <h1 className="text-4xl font-bold text-center mb-16 text-gray-900">
             What do you want to do?
           </h1>
 
@@ -50,10 +47,10 @@ const MySurveys = () => {
                     <option.icon className="w-8 h-8 text-primary" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold mb-2 text-foreground">
+                    <h3 className="text-xl font-semibold mb-2 text-gray-900">
                       {option.title}
                     </h3>
-                    <p className="text-muted-foreground leading-relaxed">
+                    <p className="text-gray-600 leading-relaxed">
                       {option.description}
                     </p>
                   </div>
@@ -63,7 +60,7 @@ const MySurveys = () => {
           </div>
 
           <div className="mt-12 text-center">
-            <p className="text-sm text-muted-foreground mb-4">
+            <p className="text-sm text-gray-600 mb-4">
               Or browse your existing surveys
             </p>
             <Button variant="outline" size="lg">
