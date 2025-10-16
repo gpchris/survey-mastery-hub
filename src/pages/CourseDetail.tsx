@@ -5,7 +5,18 @@ import { courses, getUserProgress } from "@/data/courses";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Clock, Users, CheckCircle2, Circle, PlayCircle, FileQuestion, Activity, Boxes } from "lucide-react";
+import { 
+  ArrowLeft, 
+  Clock, 
+  Users, 
+  CheckCircle2, 
+  Circle, 
+  PlayCircle, 
+  FileQuestion, 
+  Activity, 
+  Boxes,
+  ChevronRight
+} from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { SurveyBuilder } from "@/components/SurveyBuilder";
 import { DataAnalysisSandbox } from "@/components/DataAnalysisSandbox";
@@ -16,6 +27,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  useSidebar,
+} from "@/components/ui/sidebar";
+import type { Module } from "@/data/courses";
 
 const CourseDetail = () => {
   const { courseId } = useParams();
@@ -23,6 +47,7 @@ const CourseDetail = () => {
   const progress = course ? getUserProgress(course.id) : 0;
   const [sandboxOpen, setSandboxOpen] = useState(false);
   const [currentSandbox, setCurrentSandbox] = useState<"survey-builder" | "data-analysis" | null>(null);
+  const [selectedModule, setSelectedModule] = useState<Module | null>(null);
 
   if (!course) {
     return (
@@ -62,140 +87,206 @@ const CourseDetail = () => {
     setSandboxOpen(true);
   };
 
+  const handleModuleClick = (module: Module) => {
+    if (module.type === "sandbox" && module.sandboxType) {
+      openSandbox(module.sandboxType);
+    } else {
+      setSelectedModule(module);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      <main className="container mx-auto px-4 py-12">
-        <div className="max-w-5xl mx-auto">
-          <Button variant="ghost" className="mb-6" asChild>
-            <Link to="/courses">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Courses
-            </Link>
-          </Button>
+      <SidebarProvider>
+        <div className="flex w-full">
+          <main className="flex-1 container mx-auto px-4 py-12">
+            <Button variant="ghost" className="mb-6" asChild>
+              <Link to="/courses">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Courses
+              </Link>
+            </Button>
 
-          {/* Course Header */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-4 text-foreground">{course.title}</h1>
-            <p className="text-lg text-muted-foreground mb-6">{course.description}</p>
+            {/* Course Overview - Shows when no module is selected */}
+            {!selectedModule && (
+              <div className="max-w-4xl animate-fade-in">
+                <div className="mb-8">
+                  <h1 className="text-4xl font-bold mb-4 text-foreground">{course.title}</h1>
+                  <p className="text-lg text-muted-foreground mb-6">{course.description}</p>
 
-            <div className="flex flex-wrap gap-4 mb-6">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Clock className="w-5 h-5" />
-                <span>{course.duration}</span>
-              </div>
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Users className="w-5 h-5" />
-                <span>{course.participants.toLocaleString()}+ learners</span>
-              </div>
-              <Badge variant="secondary" className="text-sm">
-                {course.category}
-              </Badge>
-            </div>
-
-            {progress > 0 && (
-              <div className="mb-6">
-                <div className="flex justify-between text-sm mb-2">
-                  <span className="text-muted-foreground">Your Progress</span>
-                  <span className="font-medium text-primary">{progress}% Complete</span>
-                </div>
-                <Progress value={progress} className="h-2" />
-              </div>
-            )}
-
-            <div className="flex gap-4">
-              <Button size="lg" className="gap-2">
-                {progress > 0 && progress < 100 ? "Continue Course" : progress === 100 ? "Review Course" : "Start Course"}
-                <PlayCircle className="w-5 h-5" />
-              </Button>
-              {progress === 100 && (
-                <Button size="lg" variant="secondary" className="gap-2">
-                  Download Certificate
-                </Button>
-              )}
-            </div>
-          </div>
-
-          {/* Skills Section */}
-          <Card className="p-6 mb-8">
-            <h2 className="text-xl font-semibold mb-4 text-foreground">What You'll Learn</h2>
-            <div className="flex flex-wrap gap-2">
-              {course.skills.map((skill) => (
-                <Badge key={skill} variant="outline" className="text-sm">
-                  {skill}
-                </Badge>
-              ))}
-            </div>
-          </Card>
-
-          {/* Social Proof */}
-          {course.industryStats && (
-            <Card className="p-6 mb-8 bg-accent/10 border-accent">
-              <div className="flex items-start gap-4">
-                <Users className="w-8 h-8 text-primary mt-1" />
-                <div>
-                  <h3 className="font-semibold text-foreground mb-1">Popular in {course.industryStats.industry}</h3>
-                  <p className="text-muted-foreground">
-                    {course.industryStats.completions.toLocaleString()} professionals in {course.industryStats.industry} have completed this course.
-                  </p>
-                </div>
-              </div>
-            </Card>
-          )}
-
-          {/* Course Modules */}
-          <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-6 text-foreground">Course Content</h2>
-            <div className="space-y-3">
-              {course.modules.map((module, index) => {
-                const Icon = getModuleIcon(module.type);
-                const isCompleted = index < completedModules;
-                
-                return (
-                  <div
-                    key={module.id}
-                    className={`group flex items-center gap-4 p-4 rounded-lg transition-all ${
-                      isCompleted ? "bg-accent/20" : "bg-muted/30"
-                    } ${module.type === "sandbox" ? "hover:shadow-md hover:bg-primary/5 cursor-pointer" : ""}`}
-                    onClick={() => {
-                      if (module.type === "sandbox" && module.sandboxType) {
-                        openSandbox(module.sandboxType);
-                      }
-                    }}
-                  >
-                    <div className={`flex-shrink-0 ${isCompleted ? "text-primary" : "text-muted-foreground"}`}>
-                      {isCompleted ? (
-                        <CheckCircle2 className="w-6 h-6" />
-                      ) : (
-                        <Circle className="w-6 h-6" />
-                      )}
+                  <div className="flex flex-wrap gap-4 mb-6">
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Clock className="w-5 h-5" />
+                      <span>{course.duration}</span>
                     </div>
-                    <Icon className={`w-5 h-5 flex-shrink-0 ${module.type === "sandbox" ? "text-primary group-hover:scale-110 transition-transform" : "text-muted-foreground"}`} />
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-foreground">{module.title}</h3>
-                      {module.type === "sandbox" && (
-                        <Badge variant="secondary" className="mt-1 text-xs">
-                          Interactive Sandbox
-                        </Badge>
-                      )}
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Users className="w-5 h-5" />
+                      <span>{course.participants.toLocaleString()}+ learners</span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground flex-shrink-0">
-                      <Clock className="w-4 h-4" />
-                      <span>{module.duration}</span>
+                    <Badge variant="secondary" className="text-sm">
+                      {course.category}
+                    </Badge>
+                  </div>
+
+                  {progress > 0 && (
+                    <div className="mb-6">
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="text-muted-foreground">Your Progress</span>
+                        <span className="font-medium text-primary">{progress}% Complete</span>
+                      </div>
+                      <Progress value={progress} className="h-2" />
                     </div>
-                    {module.type === "sandbox" && (
-                      <Button size="sm" variant="outline" className="opacity-0 group-hover:opacity-100 transition-opacity">
-                        Launch
+                  )}
+
+                  <div className="flex gap-4">
+                    <Button 
+                      size="lg" 
+                      className="gap-2"
+                      onClick={() => setSelectedModule(course.modules[0])}
+                    >
+                      {progress > 0 && progress < 100 ? "Continue Course" : progress === 100 ? "Review Course" : "Start Course"}
+                      <PlayCircle className="w-5 h-5" />
+                    </Button>
+                    {progress === 100 && (
+                      <Button size="lg" variant="secondary" className="gap-2">
+                        Download Certificate
                       </Button>
                     )}
                   </div>
-                );
-              })}
-            </div>
-          </Card>
+                </div>
+
+                <Card className="p-6 mb-8">
+                  <h2 className="text-xl font-semibold mb-4 text-foreground">What You'll Learn</h2>
+                  <div className="flex flex-wrap gap-2">
+                    {course.skills.map((skill) => (
+                      <Badge key={skill} variant="outline" className="text-sm">
+                        {skill}
+                      </Badge>
+                    ))}
+                  </div>
+                </Card>
+
+                {course.industryStats && (
+                  <Card className="p-6 bg-accent/10 border-accent">
+                    <div className="flex items-start gap-4">
+                      <Users className="w-8 h-8 text-primary mt-1" />
+                      <div>
+                        <h3 className="font-semibold text-foreground mb-1">Popular in {course.industryStats.industry}</h3>
+                        <p className="text-muted-foreground">
+                          {course.industryStats.completions.toLocaleString()} professionals in {course.industryStats.industry} have completed this course.
+                        </p>
+                      </div>
+                    </div>
+                  </Card>
+                )}
+              </div>
+            )}
+
+            {/* Module Content - Shows when a module is selected */}
+            {selectedModule && (
+              <div className="max-w-4xl animate-fade-in">
+                <div className="mb-6">
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => setSelectedModule(null)}
+                    className="mb-4"
+                  >
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Back to Overview
+                  </Button>
+                  <h1 className="text-3xl font-bold mb-2">{selectedModule.title}</h1>
+                  <div className="flex items-center gap-4 text-muted-foreground">
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4" />
+                      <span>{selectedModule.duration}</span>
+                    </div>
+                    <Badge variant="outline">
+                      {selectedModule.type === "sandbox" ? "Interactive" : selectedModule.type}
+                    </Badge>
+                  </div>
+                </div>
+
+                <Card className="p-8">
+                  {selectedModule.type === "video" && (
+                    <div className="space-y-6">
+                      <div className="aspect-video bg-accent/20 rounded-lg flex items-center justify-center">
+                        <PlayCircle className="w-20 h-20 text-muted-foreground" />
+                      </div>
+                      <div className="space-y-4">
+                        <h3 className="text-xl font-semibold">Video Content</h3>
+                        <p className="text-muted-foreground">
+                          This lesson covers key concepts and practical demonstrations. 
+                          Watch the video above to learn more about {selectedModule.title.toLowerCase()}.
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedModule.type === "quiz" && (
+                    <div className="space-y-6">
+                      <div className="text-center py-12">
+                        <FileQuestion className="w-20 h-20 text-primary mx-auto mb-4" />
+                        <h3 className="text-xl font-semibold mb-2">Quiz: Test Your Knowledge</h3>
+                        <p className="text-muted-foreground mb-6">
+                          Complete this quiz to assess your understanding of the previous lessons.
+                        </p>
+                        <Button size="lg">Start Quiz</Button>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedModule.type === "activity" && (
+                    <div className="space-y-6">
+                      <div className="text-center py-12">
+                        <Activity className="w-20 h-20 text-primary mx-auto mb-4" />
+                        <h3 className="text-xl font-semibold mb-2">Practical Activity</h3>
+                        <p className="text-muted-foreground mb-6">
+                          Apply what you've learned in this hands-on exercise.
+                        </p>
+                        <Button size="lg">Start Activity</Button>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedModule.type === "sandbox" && (
+                    <div className="text-center py-12">
+                      <Boxes className="w-20 h-20 text-primary mx-auto mb-4" />
+                      <h3 className="text-xl font-semibold mb-2">Interactive Sandbox</h3>
+                      <p className="text-muted-foreground mb-6">
+                        Practice in a safe, interactive environment with real-time feedback.
+                      </p>
+                      <Button 
+                        size="lg"
+                        onClick={() => selectedModule.sandboxType && openSandbox(selectedModule.sandboxType)}
+                      >
+                        Launch Sandbox
+                      </Button>
+                    </div>
+                  )}
+                </Card>
+
+                <div className="flex items-center justify-between mt-6">
+                  <Button variant="outline">Previous Lesson</Button>
+                  <Button>Next Lesson <ChevronRight className="w-4 h-4 ml-2" /></Button>
+                </div>
+              </div>
+            )}
+          </main>
+
+          {/* Right Sidebar - Course Modules */}
+          <CourseSidebar 
+            course={course}
+            modules={course.modules}
+            completedModules={completedModules}
+            selectedModule={selectedModule}
+            onModuleClick={handleModuleClick}
+            getModuleIcon={getModuleIcon}
+          />
         </div>
-      </main>
+      </SidebarProvider>
 
       {/* Sandbox Dialog */}
       <Dialog open={sandboxOpen} onOpenChange={setSandboxOpen}>
@@ -222,5 +313,88 @@ const CourseDetail = () => {
     </div>
   );
 };
+
+interface CourseSidebarProps {
+  course: typeof courses[0];
+  modules: Module[];
+  completedModules: number;
+  selectedModule: Module | null;
+  onModuleClick: (module: Module) => void;
+  getModuleIcon: (type: string) => any;
+}
+
+function CourseSidebar({ 
+  course, 
+  modules, 
+  completedModules, 
+  selectedModule, 
+  onModuleClick, 
+  getModuleIcon 
+}: CourseSidebarProps) {
+  return (
+    <Sidebar side="right" className="w-80 border-l">
+      <SidebarContent>
+        <div className="p-4 border-b">
+          <h2 className="font-semibold text-lg mb-2">Course Content</h2>
+          <p className="text-sm text-muted-foreground">
+            {completedModules} of {modules.length} completed
+          </p>
+          <Progress 
+            value={(completedModules / modules.length) * 100} 
+            className="h-1 mt-2" 
+          />
+        </div>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Modules</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {modules.map((module, index) => {
+                const Icon = getModuleIcon(module.type);
+                const isCompleted = index < completedModules;
+                const isActive = selectedModule?.id === module.id;
+                
+                return (
+                  <SidebarMenuItem key={module.id}>
+                    <SidebarMenuButton
+                      onClick={() => onModuleClick(module)}
+                      className={`w-full justify-start gap-3 h-auto py-3 ${
+                        isActive ? "bg-accent font-medium" : ""
+                      }`}
+                    >
+                      <div className={`flex-shrink-0 ${isCompleted ? "text-primary" : "text-muted-foreground"}`}>
+                        {isCompleted ? (
+                          <CheckCircle2 className="w-5 h-5" />
+                        ) : (
+                          <Circle className="w-5 h-5" />
+                        )}
+                      </div>
+                      <div className="flex-1 text-left min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Icon className={`w-4 h-4 flex-shrink-0 ${
+                            module.type === "sandbox" ? "text-primary" : "text-muted-foreground"
+                          }`} />
+                          <span className="text-xs text-muted-foreground">
+                            {module.duration}
+                          </span>
+                        </div>
+                        <p className="text-sm leading-tight">{module.title}</p>
+                        {module.type === "sandbox" && (
+                          <Badge variant="secondary" className="mt-1 text-xs">
+                            Interactive
+                          </Badge>
+                        )}
+                      </div>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
+  );
+}
 
 export default CourseDetail;
