@@ -1,3 +1,11 @@
+import gettingStartedImg from "@/assets/course-getting-started.jpg";
+import dataAnalysisImg from "@/assets/course-data-analysis.jpg";
+import employeeEngagementImg from "@/assets/course-employee-engagement.jpg";
+import reportingImg from "@/assets/course-reporting.jpg";
+import advancedAnalyticsImg from "@/assets/course-advanced-analytics.jpg";
+import aiSurveysImg from "@/assets/course-ai-surveys.jpg";
+import specialCasesImg from "@/assets/course-special-cases.jpg";
+
 export interface Course {
   id: string;
   title: string;
@@ -32,6 +40,7 @@ export const courses: Course[] = [
     skills: ["Survey Creation", "Question Types", "Platform Navigation", "Templates"],
     participants: 15234,
     category: "Beginner",
+    imageUrl: gettingStartedImg,
     modules: [
       { id: "1", title: "Welcome to SurveyMonkey Platform", duration: "2 min", type: "video" },
       { id: "2", title: "Creating Your First Survey - Four Ways", duration: "2 min", type: "video" },
@@ -73,6 +82,7 @@ export const courses: Course[] = [
     skills: ["Data Visualization", "Sentiment Analysis", "Filtering", "Statistical Significance", "Export Reports"],
     participants: 6789,
     category: "Intermediate",
+    imageUrl: dataAnalysisImg,
     modules: [
       { id: "1", title: "Viewing Results: Summary vs Individual Responses", duration: "8 min", type: "video" },
       { id: "2", title: "Understanding Response Statuses & Quality", duration: "6 min", type: "video" },
@@ -92,6 +102,7 @@ export const courses: Course[] = [
     skills: ["Data Sharing", "Dashboard Creation", "Export Formats", "Presentation Skills"],
     participants: 5432,
     category: "Intermediate",
+    imageUrl: reportingImg,
     modules: [
       { id: "1", title: "Sharing Survey Results: Access Control & Options", duration: "8 min", type: "video" },
       { id: "2", title: "Creating Shared Data Pages & Dashboards", duration: "10 min", type: "video" },
@@ -127,6 +138,7 @@ export const courses: Course[] = [
     skills: ["Employee Engagement", "Workplace Culture", "Remote Work", "HR Analytics"],
     participants: 9123,
     category: "Advanced",
+    imageUrl: employeeEngagementImg,
     modules: [
       { id: "1", title: "Employee Engagement Survey Templates & Benchmarks", duration: "10 min", type: "video" },
       { id: "2", title: "Return to Work Solutions & Remote Work Surveys", duration: "10 min", type: "video" },
@@ -148,6 +160,7 @@ export const courses: Course[] = [
     skills: ["Thematic Analysis", "Crosstabs", "Longitudinal Analysis", "Data Trends"],
     participants: 3421,
     category: "Advanced",
+    imageUrl: advancedAnalyticsImg,
     modules: [
       { id: "1", title: "Thematic Analysis with AI", duration: "10 min", type: "video" },
       { id: "2", title: "Crosstab Reports for Deep Comparisons", duration: "10 min", type: "video" },
@@ -165,6 +178,7 @@ export const courses: Course[] = [
     skills: ["AI Survey Creation", "AI Analysis", "Sentiment Detection", "Automated Insights"],
     participants: 5400,
     category: "Advanced",
+    imageUrl: aiSurveysImg,
     modules: [
       { id: "1", title: "Build Surveys with AI (OpenAI Integration)", duration: "10 min", type: "video" },
       { id: "2", title: "Analyze with AI: Quick Insights Discovery", duration: "10 min", type: "video" },
@@ -185,6 +199,7 @@ export const courses: Course[] = [
     skills: ["Quiz Creation", "Forms", "Payment Integration", "Elections", "Consent Management"],
     participants: 4200,
     category: "Intermediate",
+    imageUrl: specialCasesImg,
     modules: [
       { id: "1", title: "Creating Quizzes with Scoring", duration: "10 min", type: "video" },
       { id: "2", title: "Getting Started with Forms", duration: "8 min", type: "video" },
