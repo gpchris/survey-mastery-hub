@@ -34,9 +34,6 @@ export const ProductHeader = () => {
 
           {/* Navigation */}
           <div className="hidden md:flex items-center gap-6 ml-8">
-            <Link to="/my-surveys" className="text-sm font-medium hover:text-gray-300 transition-colors">
-              Home
-            </Link>
             
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-1 text-sm font-medium hover:text-gray-300 transition-colors">
