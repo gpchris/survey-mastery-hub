@@ -335,8 +335,8 @@ function CourseSidebar({
 }: CourseSidebarProps) {
   return (
     <Sidebar side="right" className="w-80 border-l bg-background">
-      <SidebarContent className="bg-background">
-        <div className="p-4 border-b">
+      <SidebarContent className="bg-background pt-6">
+        <div className="p-4 border-b sticky top-0 bg-background z-10">
           <h2 className="font-semibold text-lg mb-2">Course Content</h2>
           <p className="text-sm text-muted-foreground">
             {completedModules} of {modules.length} completed
