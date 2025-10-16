@@ -9,9 +9,10 @@ export interface ModuleContent {
 }
 
 const moduleContentMap: Record<string, ModuleContent> = {
-  "getting-started-quiz-1": {
-    title: "Quiz: Planning Your Survey",
-    description: "Test your knowledge on survey planning and best practices",
+  // Getting Started Course - Module 6 Quiz
+  "6": {
+    title: "Quiz: Platform Basics",
+    description: "Test your knowledge on survey planning and platform basics",
     content: "",
     quizQuestions: [
       {
@@ -61,61 +62,6 @@ const moduleContentMap: Record<string, ModuleContent> = {
         ],
         correctAnswer: 2,
         explanation: "Skip logic personalizes the survey experience by only showing questions relevant to each respondent, improving completion rates."
-      }
-    ]
-  },
-  "getting-started-quiz-2": {
-    title: "Quiz: Collecting Responses",
-    description: "Test your understanding of response collection strategies",
-    content: "",
-    quizQuestions: [
-      {
-        id: "q1",
-        question: "What is the best way to improve survey response rates?",
-        options: [
-          "Send the survey multiple times per day",
-          "Offer incentives and keep it short",
-          "Make it mandatory",
-          "Use only yes/no questions"
-        ],
-        correctAnswer: 1,
-        explanation: "Incentives motivate participation, and shorter surveys respect respondents' time, leading to higher completion rates."
-      },
-      {
-        id: "q2",
-        question: "When is the best time to send a survey?",
-        options: [
-          "Late at night",
-          "During typical work hours on weekdays",
-          "Only on weekends",
-          "3 AM"
-        ],
-        correctAnswer: 1,
-        explanation: "Response rates are typically higher when surveys are sent during business hours when people are actively checking email."
-      },
-      {
-        id: "q3",
-        question: "What should you include in your survey invitation email?",
-        options: [
-          "Only the survey link",
-          "A detailed 5-page explanation",
-          "The purpose, estimated time, and deadline",
-          "Unrelated marketing content"
-        ],
-        correctAnswer: 2,
-        explanation: "Clear, concise communication about what to expect increases trust and response rates."
-      },
-      {
-        id: "q4",
-        question: "How can you track who has responded to your survey?",
-        options: [
-          "You can't track responses",
-          "Use SurveyMonkey's collector tracking features",
-          "Send individual surveys to each person",
-          "Call each respondent"
-        ],
-        correctAnswer: 1,
-        explanation: "SurveyMonkey provides built-in tracking features that help you monitor response rates and send reminders to non-respondents."
       }
     ]
   },
