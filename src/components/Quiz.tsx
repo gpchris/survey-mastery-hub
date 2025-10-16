@@ -83,7 +83,6 @@ export const Quiz = ({ questions, onComplete, courseName = "Course", moduleName 
       title: "Certificate Download",
       description: "Your certificate is being prepared for download.",
     });
-    // In a real app, this would generate a PDF certificate
     console.log("Downloading certificate for:", { courseName, moduleName, score });
   };
 
@@ -163,48 +162,68 @@ export const Quiz = ({ questions, onComplete, courseName = "Course", moduleName 
                 <Button 
                   onClick={handleDownloadCertificate} 
                   className="w-full gap-2"
+                  variant="outline"
                   size="lg"
                 >
                   <Download className="w-4 h-4" />
                   Download Certificate
                 </Button>
+              </div>
 
-                <div className="space-y-3">
-                  <p className="text-sm font-medium text-center">Share Your Success</p>
-                  <div className="flex gap-2 justify-center">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => handleShare("linkedin")}
-                      title="Share on LinkedIn"
-                    >
-                      <Linkedin className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => handleShare("twitter")}
-                      title="Share on Twitter"
-                    >
-                      <Twitter className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => handleShare("facebook")}
-                      title="Share on Facebook"
-                    >
-                      <Facebook className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => handleShare("copy")}
-                      title="Copy link"
-                    >
-                      <Share2 className="w-4 h-4" />
-                    </Button>
-                  </div>
+              {/* Primary CTA - My Surveys */}
+              <div className="border-2 border-primary rounded-lg p-6 space-y-3 bg-primary/5">
+                <h4 className="font-semibold text-center">Ready to Apply Your Skills?</h4>
+                <p className="text-sm text-muted-foreground text-center">
+                  Start creating your own surveys and put what you learned into practice!
+                </p>
+                <Button 
+                  asChild
+                  className="w-full gap-2"
+                  size="lg"
+                >
+                  <Link to="/my-surveys">
+                    Go to My Surveys
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </Button>
+              </div>
+
+              {/* Secondary - Share */}
+              <div className="space-y-3 pt-2">
+                <p className="text-sm font-medium text-center text-muted-foreground">Share Your Success</p>
+                <div className="flex gap-2 justify-center">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleShare("linkedin")}
+                    title="Share on LinkedIn"
+                  >
+                    <Linkedin className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleShare("twitter")}
+                    title="Share on Twitter"
+                  >
+                    <Twitter className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleShare("facebook")}
+                    title="Share on Facebook"
+                  >
+                    <Facebook className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleShare("copy")}
+                    title="Copy link"
+                  >
+                    <Share2 className="w-4 h-4" />
+                  </Button>
                 </div>
               </div>
             </div>
