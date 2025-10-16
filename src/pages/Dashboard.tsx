@@ -1,21 +1,26 @@
 import { Navigation } from "@/components/Navigation";
 import { CourseCard } from "@/components/CourseCard";
-import { courses, getUserProgress } from "@/data/courses";
+import { courses } from "@/data/courses";
 import { Card } from "@/components/ui/card";
 import { Award, BookOpen, Clock, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { useCourseProgress } from "@/hooks/useCourseProgress";
 
 const Dashboard = () => {
+  const { user } = useAuth();
+  const { getProgress } = useCourseProgress();
+
   const inProgressCourses = courses.filter((course) => {
-    const progress = getUserProgress(course.id);
+    const progress = getProgress(course.id);
     return progress > 0 && progress < 100;
   });
 
-  const completedCourses = courses.filter((course) => getUserProgress(course.id) === 100);
-  const notStartedCourses = courses.filter((course) => getUserProgress(course.id) === 0);
+  const completedCourses = courses.filter((course) => getProgress(course.id) === 100);
+  const notStartedCourses = courses.filter((course) => getProgress(course.id) === 0);
 
-  const totalProgress = courses.reduce((sum, course) => sum + getUserProgress(course.id), 0) / courses.length;
+  const totalProgress = courses.reduce((sum, course) => sum + getProgress(course.id), 0) / courses.length;
 
   return (
     <div className="min-h-screen bg-background">
@@ -24,7 +29,7 @@ const Dashboard = () => {
       <main className="container mx-auto px-4 py-12">
         <div className="max-w-7xl mx-auto">
           <div className="mb-12">
-            <h1 className="text-4xl font-bold mb-2 text-foreground">Welcome back, learner!</h1>
+            <h1 className="text-4xl font-bold mb-2 text-foreground">Welcome back, {user?.name}!</h1>
             <p className="text-lg text-muted-foreground">
               Continue your learning journey and track your progress.
             </p>
@@ -99,7 +104,7 @@ const Dashboard = () => {
                     duration={course.duration}
                     skills={course.skills}
                     participants={course.participants}
-                    progress={getUserProgress(course.id)}
+                    progress={getProgress(course.id)}
                   />
                 ))}
               </div>
