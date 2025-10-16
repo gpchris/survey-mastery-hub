@@ -129,6 +129,27 @@ export const courses: Course[] = [
       { id: "6", title: "Setup Your Team", duration: "2 min", type: "activity" },
     ],
   },
+  {
+    id: "ai-surveys",
+    title: "AI-Powered Survey Design",
+    description: "Learn how to leverage artificial intelligence to create smarter surveys, generate insights, and automate analysis.",
+    duration: "45 min",
+    skills: ["AI Integration", "Smart Analysis", "Automated Insights"],
+    participants: 5400,
+    category: "Advanced",
+    modules: [
+      { id: "1", title: "Introduction to AI in Surveys", duration: "8 min", type: "video" },
+      { id: "2", title: "AI-Generated Questions", duration: "10 min", type: "video" },
+      { id: "3", title: "Sentiment Analysis", duration: "10 min", type: "video" },
+      { id: "4", title: "Quiz: AI Fundamentals", duration: "5 min", type: "quiz" },
+      { id: "5", title: "Automated Insights & Reporting", duration: "10 min", type: "video" },
+      { id: "6", title: "Create an AI-Enhanced Survey", duration: "2 min", type: "activity" },
+    ],
+    industryStats: {
+      industry: "Technology",
+      completions: 2800,
+    },
+  },
 ];
 
 export const getUserProgress = (courseId: string): number => {
@@ -139,6 +160,7 @@ export const getUserProgress = (courseId: string): number => {
     "employee-engagement": 100,
     "customer-feedback": 15,
     "enterprise-features": 0,
+    "ai-surveys": 0,
   };
   return progressMap[courseId] || 0;
 };
