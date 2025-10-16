@@ -10,6 +10,7 @@ import Courses from "./pages/Courses";
 import Dashboard from "./pages/Dashboard";
 import CourseDetail from "./pages/CourseDetail";
 import MySurveys from "./pages/MySurveys";
+import Assessments from "./pages/Assessments";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
@@ -39,6 +40,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/assessments"
+              element={
+                <ProtectedRoute>
+                  <Assessments />
                 </ProtectedRoute>
               }
             />

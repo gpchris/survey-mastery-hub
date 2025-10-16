@@ -29,6 +29,7 @@ export const Navigation = () => {
     ...(!isAuthenticated ? [{ label: "Home", path: "/" }] : []),
     ...(isAuthenticated ? [{ label: "Dashboard", path: "/dashboard" }] : []),
     { label: "Courses", path: "/courses" },
+    ...(isAuthenticated ? [{ label: "Assessments", path: "/assessments" }] : []),
     ...(isAuthenticated ? [{ label: "My Surveys", path: "/my-surveys" }] : []),
   ];
 
