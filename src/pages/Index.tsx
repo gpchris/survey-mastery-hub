@@ -34,7 +34,6 @@ const Index = () => {
                 duration={course.duration}
                 skills={course.skills}
                 participants={course.participants}
-                industryStats={course.industryStats}
               />
             ))}
           </div>
