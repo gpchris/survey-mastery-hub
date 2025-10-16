@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navigation } from "@/components/Navigation";
 import { useParams, Link } from "react-router-dom";
 import { courses } from "@/data/courses";
@@ -53,6 +53,11 @@ const CourseDetail = () => {
   const [sandboxOpen, setSandboxOpen] = useState(false);
   const [currentSandbox, setCurrentSandbox] = useState<"survey-builder" | "data-analysis" | null>(null);
   const [selectedModule, setSelectedModule] = useState<Module | null>(null);
+
+  // Reset selected module when course changes
+  useEffect(() => {
+    setSelectedModule(null);
+  }, [courseId]);
 
   if (!course) {
     return (
