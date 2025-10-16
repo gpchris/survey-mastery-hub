@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Bell, HelpCircle, ChevronDown, Search } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   DropdownMenu,
@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export const ProductHeader = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, logout } = useAuth();
 
   const handleLogout = () => {
@@ -60,15 +61,17 @@ export const ProductHeader = () => {
               Multi-survey Analysis
             </Link>
             
-            {/* Search Bar */}
-            <div className="relative flex-1 max-w-md ml-auto">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <Input
-                type="search"
-                placeholder="Search surveys..."
-                className="pl-10 w-full bg-[#2a2a2a] border-gray-700 text-white placeholder:text-gray-400 focus:bg-[#333333]"
-              />
-            </div>
+            {/* Search Bar - Hidden on My Surveys page */}
+            {location.pathname !== '/my-surveys' && (
+              <div className="relative flex-1 max-w-md ml-auto">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Input
+                  type="search"
+                  placeholder="Search surveys..."
+                  className="pl-10 w-full bg-[#2a2a2a] border-gray-700 text-white placeholder:text-gray-400 focus:bg-[#333333]"
+                />
+              </div>
+            )}
           </div>
 
           {/* Right Actions */}
