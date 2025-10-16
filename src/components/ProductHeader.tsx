@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Bell, HelpCircle, ChevronDown } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Bell, HelpCircle, ChevronDown, Search } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -33,31 +34,41 @@ export const ProductHeader = () => {
           </Link>
 
           {/* Navigation */}
-          <div className="hidden md:flex items-center gap-6 ml-8">
+          <div className="hidden md:flex items-center gap-6 ml-8 flex-1">
             
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-1 text-sm font-medium hover:text-gray-300 transition-colors">
                 My Team
                 <ChevronDown className="w-4 h-4" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-white text-gray-900">
+              <DropdownMenuContent className="bg-white text-gray-900 z-50">
                 <DropdownMenuItem>Team Settings</DropdownMenuItem>
                 <DropdownMenuItem>Members</DropdownMenuItem>
                 <DropdownMenuItem>Permissions</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Link to="/courses" className="text-sm font-medium hover:text-gray-300 transition-colors">
+            <Link to="/courses" className="text-sm font-medium hover:text-gray-300 transition-colors whitespace-nowrap">
               Training Center
             </Link>
 
-            <Link to="#" className="text-sm font-medium hover:text-gray-300 transition-colors">
+            <Link to="#" className="text-sm font-medium hover:text-gray-300 transition-colors whitespace-nowrap">
               Plans & Pricing
             </Link>
 
-            <Link to="#" className="text-sm font-medium hover:text-gray-300 transition-colors">
+            <Link to="#" className="text-sm font-medium hover:text-gray-300 transition-colors whitespace-nowrap">
               Multi-survey Analysis
             </Link>
+            
+            {/* Search Bar */}
+            <div className="relative flex-1 max-w-md ml-auto">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Input
+                type="search"
+                placeholder="Search surveys..."
+                className="pl-10 w-full bg-[#2a2a2a] border-gray-700 text-white placeholder:text-gray-400 focus:bg-[#333333]"
+              />
+            </div>
           </div>
 
           {/* Right Actions */}

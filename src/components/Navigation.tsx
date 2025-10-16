@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { GraduationCap, Menu, X, LogOut, User } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { GraduationCap, Menu, X, LogOut, User, Search } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -41,12 +42,12 @@ export const Navigation = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-8 flex-1 mx-8">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
+                className={`text-sm font-medium transition-colors hover:text-primary whitespace-nowrap ${
                   location.pathname === item.path
                     ? "text-primary"
                     : "text-muted-foreground"
@@ -55,6 +56,16 @@ export const Navigation = () => {
                 {item.label}
               </Link>
             ))}
+            
+            {/* Search Bar */}
+            <div className="relative flex-1 max-w-md ml-auto">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Search courses..."
+                className="pl-10 w-full"
+              />
+            </div>
           </div>
 
           <div className="hidden md:flex items-center gap-4">
