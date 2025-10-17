@@ -484,3 +484,4 @@ function CourseSidebar({
 }
 
 export default CourseDetail;
+
